@@ -1,16 +1,32 @@
-<h1><%= @list.name.capitalize %></h1>
+<% if @list.photo.key? %>
+    <div class="banner" style="background-image: linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)), url(<%= cl_image_path @list.photo.key, height: 300, width: 400, crop: :fill %>);">
+      <div class="container">
+        <h1>Here is your list <b><%= @list.name.capitalize %></b></h1>
+        <p>It contains <% @list.movies.count %> movies: </p>
+      </div>
+    </div>
+  <% else %>
+        <div class="banner" style="background-image: linear-gradient(rgba(0,0,0,0.4),rgba(0,0,0,0.4)), url(https://plus.unsplash.com/premium_photo-1667425092015-a6b45e111872?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80);">
+      <div class="container">
+        <h1>Here is your list <b><%= @list.name.capitalize %></b></h1>
+        <p>It contains <% @list.movies.count %> movies: </p>
+      </div>
+    </div>
+  <% end %>
 
-<p>Here is your list <b><%= @list.name.capitalize %></b></p>
-<p>It contains <% @list.movies.count %> movies: </p>
 <% @list.movies.each do |movie| %>
-<%= movie.title %>
-<%= movie.overview %>
-<%= movie.rating %>
+    <div class="card-product">
+      <img src="<%= movie.poster_url %>" alt="">
+      <div class="card-product-infos">
+        <h2><%= movie.title %></h2>
+        <p><%= movie.overview %></p>
+        <p><%= movie.rating %></p>
+      </div>
+    </div>
 
 <% bookmark = Bookmark.find_by(movie_id: movie.id, list_id: @list.id) %>
 <%= link_to "🗑", bookmark_path(bookmark), data: {turbo_method: :delete, turbo_confirm: "Do you really want to delete this movie from the list?"} %>
 <% end %>
-
 
 <p><%= link_to "Back to all lists", lists_path %></p>
 <p><%= link_to "Add a movie to this list", new_list_bookmark_path(@list) %></p>

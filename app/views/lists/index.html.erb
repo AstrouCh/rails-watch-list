@@ -1,7 +1,16 @@
 <h1>My movie lists</h1>
 <ul>
   <% @lists.each do |list| %>
-    <li><%= link_to list.name, list_path(list) %></li>
+    <% if list.photo.attached? %>
+      <div class="card-category" style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url(<%= cl_image_path list.photo.key %>)">
+        <li><%= link_to list.name, list_path(list) %></li>
+      </div>
+    <% else %>
+      <div class="card-category"
+      style="background-image: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.3)), url('https://plus.unsplash.com/premium_photo-1667425092015-a6b45e111872?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=687&q=80')">
+      <li><%= link_to list.name, list_path(list) %></li>
+      </div>
+    <% end %>
   <% end %>
 </ul>
 
